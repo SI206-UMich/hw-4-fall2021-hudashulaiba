@@ -1,6 +1,6 @@
 
 import unittest
-import random #FOR EXTRA CREDIT 
+import random #FOR EXTRA CREDIT
 
 # The Customer class
 # The Customer class represents a customer who will order from the stalls.
@@ -215,24 +215,65 @@ class TestAllMethods(unittest.TestCase):
 	# Check that the stall can properly see when it is empty
     def test_has_item(self):
         # Set up to run test cases
+        i1 = {"Pizza":35, "Salad":70, "Pasta":12}
+        i2 = {"Bread":89, "Sandwich":18, "Quesadilla":63, "Rice":109}
+
+        s1 = Stall("Italian", i1, 12)
+        s2 = Stall("Carb City", i2, 8)
 
         # Test to see if has_item returns True when a stall has enough items left
         # Please follow the instructions below to create three different kinds of test cases 
-        # Test case 1: the stall does not have this food item: 
+        # Test case 1: the stall does not have this food item:
+        self.assertFalse(s1.has_item("Bread", 1)) 
         
         # Test case 2: the stall does not have enough food item: 
-        
+        self.assertFalse(s2.has_item("Sandwich", 23)) 
+
         # Test case 3: the stall has the food item of the certain quantity: 
-        pass
+        self.assertTrue(s1.has_item("Pizza", 35)) 
+        self.assertTrue(s2.has_item("Rice", 20)) 
 
 	# Test validate order
     def test_validate_order(self):
-		# case 1: test if a customer doesn't have enough money in their wallet to order
+        #set up
+        i1 = {"Pizza":35, "Salad":70, "Pasta":12}
+        i2 = {"Bread":89, "Sandwich":18, "Quesadilla":63, "Rice":109}
+
+        huda = Customer("Huda") #default wallet = 100
+        mike = Customer("Mike", 703)
+        helen = Customer("Helen", 89)
+        ann = Customer("Ann", 35)
+
+        s1 = Stall("Italian", i1, 12)
+        s2 = Stall("Carb City", i2, 8)
+
+        c1 = Cashier("Tyler", [s1])
+        c2 = Cashier("Frankie", [s2])
+
+		#start testing
+        # case 1: test if a customer doesn't have enough money in their wallet to order
+        annbefore = ann.wallet
+        ann.validate_order(c2, s2, "Rice", 5)
+        #assert equal by seeing if the order went through with wallet
+        self.assertEqual(annbefore, ann.wallet)
 
 		# case 2: test if the stall doesn't have enough food left in stock
+        helenbefore = helen.wallet
+        helen.validate_order(c1, s1, "Pasta", 13)
+        #assert equal by seeing if the order went through with wallet
+        self.assertEqual(helenbefore, helen.wallet)
 
 		# case 3: check if the cashier can order item from that stall
-        pass
+        hudabefore = huda.wallet
+        huda.validate_order(c2, s2, "Quesadilla", 3)
+        #assert equal by seeing if the order went through with wallet
+        self.assertNotEqual(hudabefore, huda.wallet)
+
+        # case 4: test when the stall doesn't have the item
+        mikebefore = mike.wallet
+        mike.validate_order(c1, s2, "Bread", 2)
+        #assert equal by seeing if the order went through with wallet
+        self.assertEqual(mikebefore, mike.wallet)
 
     # Test if a customer can add money to their wallet
     def test_reload_money(self):
@@ -279,7 +320,6 @@ def main():
     #case 4: the customer successfully places an order
     huda.validate_order(c2, s2, "Quesadilla", 3) 
 
-    pass
 
 if __name__ == "__main__":
 	main()
