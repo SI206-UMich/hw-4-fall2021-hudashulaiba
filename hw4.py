@@ -1,4 +1,3 @@
-
 import unittest
 import random #FOR EXTRA CREDIT
 
@@ -251,15 +250,19 @@ class TestAllMethods(unittest.TestCase):
         c2 = Cashier("Frankie", [s2])
 
 		#start testing
+        #new line for easy comparison
+        print('\n')
         # case 1: test if a customer doesn't have enough money in their wallet to order
         annbefore = ann.wallet
         ann.validate_order(c2, s2, "Rice", 5)
+        print("EXPECTED: Don't have enough money for that :( Please reload more money!\n")
         #assert equal by seeing if the order went through with wallet
         self.assertEqual(annbefore, ann.wallet)
 
 		# case 2: test if the stall doesn't have enough food left in stock
         helenbefore = helen.wallet
         helen.validate_order(c1, s1, "Pasta", 13)
+        print("EXPECTED: Our stall has run out of Pasta :( Please try a different stall!\n")
         #assert equal by seeing if the order went through with wallet
         self.assertEqual(helenbefore, helen.wallet)
 
@@ -272,12 +275,33 @@ class TestAllMethods(unittest.TestCase):
         # case 4: test when the stall doesn't have the item
         mikebefore = mike.wallet
         mike.validate_order(c1, s2, "Bread", 2)
+        print("EXPECTED: Sorry, we don't have that vendor stall. Please try a different one. \n")
         #assert equal by seeing if the order went through with wallet
         self.assertEqual(mikebefore, mike.wallet)
 
     # Test if a customer can add money to their wallet
     def test_reload_money(self):
-        pass
+        #set up
+        huda = Customer("Huda") #default wallet = 100
+        mike = Customer("Mike", 703)
+        helen = Customer("Helen", 10)
+        ann = Customer("Ann", 0)
+
+        #reload default wallet
+        huda.reload_money(10)
+        self.assertEqual(huda.wallet, (100 + 10))
+
+        #relaod wallet with unique nonzero amount
+        mike.reload_money(89)
+        self.assertEqual(mike.wallet, (703 + 89))
+
+        #reload wallet but value is 0
+        helen.reload_money(0)
+        self.assertEqual(helen.wallet, (0 + 10))
+
+        #reload wallet that starts with nothing
+        ann.reload_money(320)
+        self.assertEqual(ann.wallet, (0 + 320))
     
 ### Write main function
 def main():
