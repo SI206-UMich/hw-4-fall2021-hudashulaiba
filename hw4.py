@@ -1,6 +1,6 @@
 
 import unittest
-import random #FOR EXTRA CREDIT
+import random #FOR EXTRA CREDIT 
 
 # The Customer class
 # The Customer class represents a customer who will order from the stalls.
